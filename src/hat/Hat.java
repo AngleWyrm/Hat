@@ -41,15 +41,14 @@ public class Hat<T>
 	    return tree.elementAt(index).item;
 	}
 
-	public T pull( T buffer )
+	public T pull()
 	{
 	    // get random item
 	    int random_weight = rng.nextInt(tree.elementAt(0).family_weight);
 	    int index = find_index( 0, random_weight );
 	    
-	    buffer = tree.elementAt(index).item;
-
-	    erase( index );
+	    T buffer = tree.elementAt(index).item;
+	    erase(index);
 	    return buffer;
 	};	
 
@@ -74,19 +73,17 @@ public class Hat<T>
 	// Erase a given index [0,tree.size) by over-writing with last item
 	public void erase(int index)
 	{
-		int lastIndex = tree.size() - 1;
-		if(lastIndex <= 0){
+		// quick clear if removing only entry in tree
+		if(tree.size() <= 1){
 			tree.clear();
 			return;
 		}
 		
-	    tree.elementAt(index).item = tree.elementAt( lastIndex ).item;
-	    tree.elementAt(index).chance_weight = tree.elementAt( lastIndex ).chance_weight;
-	    tree.elementAt(index).family_weight = tree.elementAt( lastIndex ).family_weight;
-	    tree.removeElementAt( lastIndex ); 
+		// Copy last item into current item
+	    tree.elementAt(index).copy(tree.elementAt(tree.size()-1));
+	    update_weights(index);
 	    
-	    if( tree.size() <= 0 ) return; // if we deleted last node, bail
-	    update_weights(index);       // update replacement node's parents
+	    tree.removeElementAt(tree.size()-1); 
 
 	    // update replacement node's old parents
 	    if( (tree.size() % 2) >= 0 ) { // then odd number, old size was even (female node)
@@ -177,6 +174,12 @@ public class Hat<T>
 		Node(T in, int chances){
 			item = in;
 			chance_weight = family_weight = chances;
+		}
+		
+		public void copy (Node other){
+			item = other.item;
+			chance_weight = other.chance_weight;
+			family_weight = other.family_weight;
 		}
 	}	
 	Vector<Node> tree;
