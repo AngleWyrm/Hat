@@ -97,7 +97,7 @@ public class Hat<T>
 	
 	// Internal functions -----------------------------------------------------
 	
-	int find_index( int index, int target ){
+	private int find_index( int index, int target ){
 	    // divide weight into three groups: Self, Son & Daughter, and test each
 
 	    // Testing self
