@@ -28,7 +28,7 @@ public class AdvancedDice {
 
 	public static void run()
 	{	
-		System.out.println("--|Advanced Dice|--------------------------------------------------------------");
+		System.out.println("\n\n--|Advanced Dice|--------------------------------------------------------------");
 		System.out.println("Roll 3d6 with only ONE call to the RNG");
 		
 	    // load a hat with our chance weights
